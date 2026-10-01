@@ -1,0 +1,115 @@
+.main {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: var(--space-12) var(--space-4);
+  animation: fadeInUp var(--transition-slow) ease-out both;
+}
+
+.hero {
+  text-align: center;
+  margin-bottom: var(--space-12);
+}
+
+.title {
+  font-size: var(--text-4xl);
+  font-weight: 900;
+  margin-bottom: var(--space-4);
+}
+
+.subtitle {
+  font-size: var(--text-xl);
+  color: var(--text-secondary);
+}
+
+.section {
+  background: var(--bg-surface-0);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
+  padding: var(--space-8);
+  margin-bottom: var(--space-8);
+}
+
+.section h2 {
+  font-size: var(--text-2xl);
+  font-weight: 800;
+  margin-bottom: var(--space-4);
+  color: var(--color-accent);
+}
+
+.section p {
+  font-size: var(--text-base);
+  line-height: var(--leading-relaxed);
+  color: var(--text-secondary);
+  margin-bottom: var(--space-4);
+}
+
+.techList {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.techList li {
+  padding: var(--space-3);
+  background: var(--bg-surface-1);
+  border-radius: var(--radius-md);
+  color: var(--text-secondary);
+}
+
+.techList li strong {
+  color: var(--text-primary);
+  margin-right: var(--space-2);
+}
+
+.teamContext {
+  margin-bottom: var(--space-6) !important;
+}
+
+.teamList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  list-style: none;
+  padding: 0;
+}
+
+.memberItem {
+  background: var(--bg-surface-1);
+  padding: var(--space-4) var(--space-6);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-subtle);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+}
+
+.memberInfo h3 {
+  font-size: var(--text-lg);
+  font-weight: 700;
+  margin: 0;
+  color: var(--text-primary);
+}
+
+.connectBtn {
+  background: var(--color-primary);
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: var(--text-sm);
+  padding: var(--space-2) var(--space-5);
+  border-radius: var(--radius-full);
+  transition: opacity var(--transition-fast), transform var(--transition-fast);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.connectBtn:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+  color: white;
+}

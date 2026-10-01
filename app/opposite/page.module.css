@@ -1,0 +1,292 @@
+/* ═══════════════════════════════════════════════════════════════
+   Opposite Mode Styles
+   ═══════════════════════════════════════════════════════════════ */
+
+.main {
+  min-height: calc(100dvh - var(--header-height));
+}
+
+/* ── Setup Phase ── */
+.setup {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: var(--space-12) var(--space-4);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-8);
+  animation: fadeInUp var(--transition-slow) ease-out both;
+  text-align: center;
+}
+
+.setupHeader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.modeIcon {
+  font-size: var(--text-5xl);
+}
+
+.title {
+  font-size: var(--text-3xl);
+  font-weight: 900;
+}
+
+.subtitle {
+  color: var(--text-secondary);
+  font-size: var(--text-lg);
+  max-width: 500px;
+}
+
+/* ── Common States ── */
+.centerState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  gap: var(--space-4);
+  color: var(--text-secondary);
+  min-height: 50vh;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid var(--bg-surface-2);
+  border-top-color: var(--color-accent);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+/* ── Active Session ── */
+.sessionContainer {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--space-6) var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  min-height: calc(100dvh - var(--header-height));
+}
+
+.sessionHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+}
+
+.headerContent {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.sessionTitle {
+  font-size: var(--text-xl);
+  font-weight: 800;
+}
+
+.topicInfo {
+  background: var(--bg-surface-1);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-subtle);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.sessionTopic {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+}
+
+.positionIndicator {
+  font-size: var(--text-sm);
+  color: var(--text-tertiary);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.positionBadge {
+  font-size: var(--text-xs);
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+  text-transform: uppercase;
+}
+
+.for {
+  background: hsla(120, 70%, 40%, 0.2);
+  color: hsl(120, 70%, 60%);
+  border: 1px solid hsla(120, 70%, 40%, 0.3);
+}
+
+.against {
+  background: hsla(0, 80%, 60%, 0.2);
+  color: var(--color-error);
+  border: 1px solid hsla(0, 80%, 60%, 0.3);
+}
+
+/* Switch Banner */
+.switchBanner {
+  background: hsla(0, 80%, 60%, 0.15);
+  border: 1px solid var(--color-error);
+  color: var(--color-error);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm);
+  text-align: center;
+  animation: pulse-glow 2s infinite;
+}
+
+/* Conversation */
+.conversationArea {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  max-height: 45vh;
+  padding: var(--space-4);
+  border-radius: var(--radius-xl);
+  background: var(--bg-surface-0);
+  border: 1px solid var(--border-subtle);
+}
+
+.exchangeBubble {
+  padding: var(--space-4);
+  border-radius: var(--radius-lg);
+  animation: fadeInUp var(--transition-base) ease-out both;
+}
+
+.exchange_ai {
+  background: var(--bg-surface-1);
+  border: 1px solid var(--border-subtle);
+  margin-right: var(--space-8);
+}
+
+.exchange_user {
+  background: hsla(280, 90%, 65%, 0.08);
+  border: 1px solid hsla(280, 90%, 65%, 0.15);
+  margin-left: var(--space-8);
+}
+
+.switchBubble {
+  background: hsla(0, 80%, 60%, 0.1) !important;
+  border-color: var(--color-error) !important;
+}
+
+.exchangeRole {
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: var(--text-tertiary);
+  margin-bottom: var(--space-2);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.playBtn {
+  background: transparent;
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-size: var(--text-sm);
+  padding: 4px 8px;
+  border-radius: var(--radius-sm);
+  transition: all var(--transition-fast);
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.playBtn:hover {
+  background: var(--bg-surface-2);
+  color: var(--text-primary);
+}
+
+.exchangeContent {
+  font-size: var(--text-sm);
+  line-height: var(--leading-relaxed);
+  color: var(--text-primary);
+}
+
+.thinking {
+  display: flex;
+  gap: var(--space-1);
+  padding: var(--space-2) 0;
+}
+
+.thinkingDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--text-tertiary);
+  animation: pulse-glow 1.4s ease-in-out infinite;
+}
+.thinkingDot:nth-child(2) { animation-delay: 0.2s; }
+.thinkingDot:nth-child(3) { animation-delay: 0.4s; }
+
+.apiError {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  background: var(--color-error-bg);
+  color: var(--color-error);
+  font-size: var(--text-sm);
+}
+
+.dismissBtn {
+  margin-left: auto;
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: var(--text-tertiary);
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: var(--space-1) var(--space-2);
+}
+
+.analysisPanel {
+  padding: var(--space-6);
+  border-radius: var(--radius-xl);
+  background: var(--bg-surface-0);
+  border: 1px solid var(--border-subtle);
+}
+
+.sessionComplete {
+  text-align: center;
+  padding: var(--space-10);
+  border-radius: var(--radius-xl);
+  background: var(--bg-surface-0);
+  border: 1px solid var(--border-subtle);
+}
+
+.sessionComplete h2 {
+  font-size: var(--text-2xl);
+  margin-bottom: var(--space-3);
+}
+
+.sessionComplete p {
+  color: var(--text-secondary);
+  margin-bottom: var(--space-6);
+}
+
+.completeActions {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-4);
+}

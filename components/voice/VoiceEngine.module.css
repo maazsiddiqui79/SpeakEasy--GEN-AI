@@ -1,0 +1,272 @@
+/* ═══════════════════════════════════════════════════════════════
+   VoiceEngine Styles
+   ═══════════════════════════════════════════════════════════════ */
+
+.voiceEngine {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-6);
+  padding: var(--space-6);
+}
+
+/* State Bar */
+.stateBar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  width: 100%;
+  justify-content: center;
+}
+
+.stateIndicator {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-full);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  transition: all var(--transition-base);
+}
+
+.state_ready {
+  background: var(--bg-surface-1);
+  color: var(--text-secondary);
+}
+
+.state_listening {
+  background: hsla(0, 80%, 60%, 0.12);
+  color: var(--color-error);
+}
+
+.state_analyzing {
+  background: hsla(45, 90%, 55%, 0.12);
+  color: var(--color-warning);
+}
+
+.state_speaking {
+  background: hsla(250, 90%, 65%, 0.12);
+  color: var(--color-primary-light);
+}
+
+.state_error {
+  background: var(--color-error-bg);
+  color: var(--color-error);
+}
+
+.stateDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.state_listening .stateDot {
+  animation: pulse-glow 1s ease-in-out infinite;
+}
+
+.state_analyzing .stateDot {
+  animation: spin 1s linear infinite;
+}
+
+.stateLabel {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  min-width: 150px;
+  text-align: left;
+}
+
+.playbackControls {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.controlBtn {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-full);
+  background: var(--bg-surface-2);
+  border: 1px solid var(--border-default);
+  cursor: pointer;
+  font-size: var(--text-sm);
+  transition: all var(--transition-fast);
+}
+
+.controlBtn:hover {
+  background: var(--bg-surface-3);
+  border-color: var(--border-strong);
+}
+
+/* Mic Button */
+.micContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.micButton {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--bg-surface-2), var(--bg-surface-3));
+  border: 2px solid var(--border-default);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--transition-base);
+  box-shadow: var(--shadow-md);
+}
+
+.micButton:hover:not(.micDisabled) {
+  transform: scale(1.05);
+  border-color: var(--color-primary);
+  box-shadow: var(--shadow-glow-primary);
+}
+
+.micActive {
+  background: linear-gradient(135deg, hsla(0, 80%, 60%, 0.2), hsla(0, 80%, 50%, 0.3));
+  border-color: var(--color-error);
+  box-shadow: 0 0 30px hsla(0, 80%, 60%, 0.3);
+}
+
+.micDisabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.micIcon {
+  font-size: var(--text-2xl);
+  position: relative;
+  z-index: 2;
+}
+
+.micPulse {
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 2px solid var(--color-error);
+  animation: pulse-ring 2s ease-out infinite;
+}
+
+.micHint {
+  font-size: var(--text-xs);
+  color: var(--text-tertiary);
+}
+
+/* Transcript */
+.transcript {
+  width: 100%;
+  max-width: 600px;
+  padding: var(--space-4);
+  border-radius: var(--radius-lg);
+  background: var(--bg-surface-1);
+  border: 1px solid var(--border-subtle);
+}
+
+.transcriptLabel {
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wider);
+  margin-bottom: var(--space-2);
+}
+
+.transcriptText {
+  font-size: var(--text-base);
+  line-height: var(--leading-relaxed);
+  color: var(--text-primary);
+}
+
+.interimText {
+  color: var(--text-tertiary);
+  font-style: italic;
+}
+
+.confidence {
+  margin-top: var(--space-2);
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+}
+
+/* Error */
+.error {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  background: var(--color-error-bg);
+  color: var(--color-error);
+  font-size: var(--text-sm);
+  width: 100%;
+  max-width: 600px;
+  flex-wrap: wrap;
+}
+
+.errorIcon {
+  font-size: var(--text-lg);
+}
+
+.errorAction {
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: var(--color-primary-light);
+  text-decoration: underline;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+/* Text Fallback */
+.fallback {
+  width: 100%;
+  max-width: 600px;
+}
+
+.fallbackLabel {
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wider);
+  margin-bottom: var(--space-2);
+}
+
+.fallbackInput {
+  display: flex;
+  gap: var(--space-3);
+  align-items: flex-end;
+}
+
+.fallbackTextarea {
+  flex: 1;
+  resize: vertical;
+  min-height: 60px;
+  font-family: var(--font-body);
+}
+
+.fallbackSubmit {
+  flex-shrink: 0;
+}
+
+/* Responsive */
+@media (min-width: 768px) {
+  .micButton {
+    width: 96px;
+    height: 96px;
+  }
+
+  .micIcon {
+    font-size: var(--text-3xl);
+  }
+}
