@@ -211,12 +211,6 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* Footer */}
-        <footer className={styles.footer}>
-          <p className={styles.footerText}>
-            Speak Easy — Voice-first communication training powered by artificial intelligence
-          </p>
-        </footer>
       </main>
     </>
   );

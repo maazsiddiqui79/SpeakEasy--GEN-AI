@@ -5,6 +5,7 @@ import { useVoiceRecognition } from '@/hooks/useVoiceRecognition';
 import { useVoiceSynthesis } from '@/hooks/useVoiceSynthesis';
 import { VoiceState } from '@/types/voice';
 import { MicIcon, PlayIcon, RobotIcon } from '@/components/ui/Icons';
+import Loader from '@/components/ui/Loader';
 import styles from './VoiceEngine.module.css';
 
 interface VoiceEngineProps {
@@ -160,7 +161,7 @@ export default function VoiceEngine({
           <span className={styles.stateLabel} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             {voiceState === 'ready' && <><MicIcon /> Ready to speak</>}
             {voiceState === 'listening' && <><div style={{ width: '12px', height: '12px', borderRadius: '50%', background: 'var(--color-error)' }} /> Listening {formatTime(recordingDuration)}</>}
-            {voiceState === 'analyzing' && <><RobotIcon /> Analyzing...</>}
+            {voiceState === 'analyzing' && <><Loader size="small" /> Analyzing...</>}
             {voiceState === 'speaking' && <><PlayIcon /> AI Speaking</>}
             {voiceState === 'error' && <><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg> Error</>}
           </span>
@@ -287,10 +288,10 @@ export default function VoiceEngine({
             <button
               onClick={handleTextSubmit}
               className={"btn btn-primary " + (styles.fallbackSubmit)}
-              disabled={!textInput.trim()}
+              disabled={!textInput.trim() || disabled}
               id="text-submit-btn"
             >
-              Submit
+              {disabled ? 'Submitting...' : 'Submit'}
             </button>
           </div>
         </div>

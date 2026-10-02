@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import { useState, useCallback, useRef, useEffect } from 'react';
 import Header from '@/components/layout/Header';
@@ -172,7 +172,7 @@ export default function InterviewPage() {
       <Header />
       <main className={styles.main}>
         {/* Language Selector */}
-        <div style={{ display: 'flex', justifyContent: 'flex-end', padding: '0 0 12px 0' }}>
+        <div style={{ display: 'flex', justifyContent: 'center', padding: '16px 0 12px 0' }}>
           <LanguageSelector selectedLanguage={selectedLanguage} onChange={setSelectedLanguage} />
         </div>
         {/* Setup Phase */}
@@ -354,7 +354,7 @@ export default function InterviewPage() {
                       setIsGeneratingPDF(true);
                       await new Promise(resolve => setTimeout(resolve, 50));
                       try {
-                        generatePDFReport({
+                        await generatePDFReport({
                           mode: 'Interview Mode', 
                           topic: selectedTopic === 'Custom' ? customTopic : selectedTopic, 
                           exchanges: exchanges, 

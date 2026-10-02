@@ -1,0 +1,31 @@
+.footer {
+  margin-top: auto;
+  padding: var(--space-8);
+  text-align: center;
+  border-top: 1px solid var(--border-subtle);
+  width: 100%;
+}
+
+.footerText {
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+}
+
+.footerLinks {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.footerLinks a {
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.footerLinks a:hover,
+.footerLinks a:focus {
+  color: var(--color-primary);
+}

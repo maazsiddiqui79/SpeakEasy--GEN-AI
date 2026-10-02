@@ -300,6 +300,17 @@ ul, ol {
   overflow: hidden;
 }
 
+.btn:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none !important;
+  box-shadow: none !important;
+}
 .btn::before {
   content: '';
   position: absolute;
@@ -641,3 +652,5 @@ ul, ol {
   --shadow-lg: 0 8px 24px hsla(240, 20%, 10%, 0.12);
   --shadow-xl: 0 16px 48px hsla(240, 20%, 10%, 0.15);
 }
+
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border-width: 0; }

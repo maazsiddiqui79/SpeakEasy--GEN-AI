@@ -255,8 +255,8 @@ export default function PressurePage() {
         <div
           style={{
             display: 'flex',
-            justifyContent: 'flex-end',
-            padding: '0 0 12px 0',
+            justifyContent: 'center',
+            padding: '16px 0 12px 0',
           }}
         >
           <LanguageSelector
@@ -668,7 +668,7 @@ export default function PressurePage() {
                   );
 
                   try {
-                    generatePDFReport({
+                    await generatePDFReport({
                       mode: 'Pressure Mode',
                       topic: topic,
                       transcript: editableTranscript,

@@ -1,4 +1,3 @@
-import { jsPDF } from 'jspdf';
 import { SpeechAnalysis, RecoverySuggestion } from '@/types/speech';
 import { SessionExchange } from '@/types/session';
 
@@ -12,7 +11,8 @@ interface PDFReportData {
   exchanges?: SessionExchange[];
 }
 
-export function generatePDFReport(data: PDFReportData) {
+export async function generatePDFReport(data: PDFReportData) {
+  const { jsPDF } = await import('jspdf');
   const doc = new jsPDF();
   let yPos = 20;
   const margin = 20;

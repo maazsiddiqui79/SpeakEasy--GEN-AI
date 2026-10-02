@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { RecoverySuggestion } from '@/types/speech';
 import { SpeechAnalysis } from '@/types/speech';
 import { SessionExchange } from '@/types/session';
+import CopyButton from '@/components/ui/CopyButton';
 import styles from './SpeechFeedback.module.css';
 
 interface SpeechFeedbackProps {
@@ -114,8 +115,13 @@ export default function SpeechFeedback({
                 </div>
 
                 <div className={styles.alternative}>
-                  <span className={styles.label}>Try instead:</span>
-                  <p className={styles.alternativeText}>{suggestion.suggestedPhrase}</p>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '1rem' }}>
+                    <div>
+                      <span className={styles.label}>Try instead:</span>
+                      <p className={styles.alternativeText}>{suggestion.suggestedPhrase}</p>
+                    </div>
+                    <CopyButton text={suggestion.suggestedPhrase} />
+                  </div>
                 </div>
               </div>
             </div>

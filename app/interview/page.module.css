@@ -82,9 +82,9 @@
 }
 
 .topicBtnActive {
-  background: hsla(250, 90%, 65%, 0.12);
+  background: var(--color-primary);
   border-color: var(--color-primary);
-  color: var(--color-primary-light);
+  color: #ffffff;
 }
 
 .customTopicSection {

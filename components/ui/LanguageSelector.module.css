@@ -1,7 +1,8 @@
-﻿/* LanguageSelector Component */
+/* LanguageSelector Component */
 
 .languageSelectorWrapper {
   display: flex;
+  flex-wrap: nowrap;
   align-items: center;
   gap: 10px;
   background: var(--bg-card, #1a1a2e);
@@ -32,7 +33,7 @@
   background: transparent;
   border: none;
   outline: none;
-  color: var(--text-primary, #f0f4ff);
+  color: #ffffff !important;
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
@@ -44,11 +45,41 @@
   background-repeat: no-repeat;
   background-position: right 2px center;
   padding-right: 20px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  max-width: 100%;
 }
 
 .select option {
   background: #1a1a2e;
   color: #f0f4ff;
+}
+
+@media (max-width: 640px) {
+  .langLabel {
+    display: none;
+  }
+  
+  .languageSelectorWrapper {
+    gap: 6px;
+    padding: 6px 10px;
+    max-width: 100%;
+  }
+
+  .select {
+    max-width: 160px;
+    font-size: 13px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 380px) {
+  .select {
+    max-width: 120px;
+  }
 }
 
 /* Top bar wrapper for all modes */

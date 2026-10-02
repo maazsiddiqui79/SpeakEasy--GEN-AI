@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import { useState, useCallback, useRef, useEffect } from 'react';
 import Header from '@/components/layout/Header';
@@ -194,7 +194,7 @@ export default function DocumentPage() {
       <Header />
       <main className={styles.main}>
         {/* Language Selector */}
-        <div style={{ display: 'flex', justifyContent: 'flex-end', padding: '0 0 12px 0' }}>
+        <div style={{ display: 'flex', justifyContent: 'center', padding: '16px 0 12px 0' }}>
           <LanguageSelector selectedLanguage={selectedLanguage} onChange={setSelectedLanguage} />
         </div>
         {/* Upload Phase */}
@@ -287,7 +287,7 @@ export default function DocumentPage() {
               <div>
                 <h1 className={styles.sessionTitle} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><DocumentIcon /> Document Session</h1>
                 <p className={styles.sessionTopic}>
-                  File: {file?.name} Ã¢â‚¬Â¢ Mode: {subMode === 'presentation' ? 'Presentation' : 'Interview'}
+                  File: {file?.name} â€¢ Mode: {subMode === 'presentation' ? 'Presentation' : 'Interview'}
                 </p>
               </div>
               {phase === 'active' && (
@@ -419,7 +419,7 @@ export default function DocumentPage() {
                       setIsGeneratingPDF(true);
                       await new Promise(resolve => setTimeout(resolve, 50));
                       try {
-                        generatePDFReport({
+                        await generatePDFReport({
                           mode: subMode === 'presentation' ? 'Document Presentation' : 'Document Interview', 
                           topic: file?.name || 'Uploaded Document', 
                           exchanges: exchanges, 
