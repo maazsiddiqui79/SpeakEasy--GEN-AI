@@ -1,18 +1,30 @@
-/* ═══════════════════════════════════════════════════════════════
-   SPEAK EASY — useVoiceSynthesis Hook
-   
-   Wraps the Web Speech API SpeechSynthesis with:
-   - Voice selection (preferring natural-sounding voices)
-   - Playback controls (play, pause, resume, stop)
-   - State management
-   - Queue management
-   ═══════════════════════════════════════════════════════════════ */
+/*
+ * ═══════════════════════════════════════════════════════════════
+ *  SPEAK EASY — useVoiceSynthesis Hook
+ *
+ *  Wraps the Web Speech API SpeechSynthesis with:
+ *  - Voice selection
+ *  - Natural-sounding voice preference
+ *  - Playback controls
+ *  - State management
+ *  - Queue management
+ *  - Safe utterance lifecycle
+ * ═══════════════════════════════════════════════════════════════
+ */
 
 'use client';
 
-import { useState, useEffect, useRef, useCallback } from 'react';
+import {
+  useState,
+  useEffect,
+  useRef,
+  useCallback,
+} from 'react';
 
-type SynthesisState = 'idle' | 'speaking' | 'paused';
+type SynthesisState =
+  | 'idle'
+  | 'speaking'
+  | 'paused';
 
 interface UseVoiceSynthesisOptions {
   rate?: number;
@@ -34,7 +46,9 @@ interface UseVoiceSynthesisReturn {
   isSupported: boolean;
   availableVoices: SpeechSynthesisVoice[];
   selectedVoice: SpeechSynthesisVoice | null;
-  setVoice: (voice: SpeechSynthesisVoice) => void;
+  setVoice: (
+    voice: SpeechSynthesisVoice
+  ) => void;
 }
 
 export function useVoiceSynthesis(
@@ -51,152 +65,544 @@ export function useVoiceSynthesis(
     onError,
   } = options;
 
-  const [state, setState] = useState<SynthesisState>('idle');
-  const [isSupported, setIsSupported] = useState(false);
-  const [availableVoices, setAvailableVoices] = useState<SpeechSynthesisVoice[]>([]);
-  const [selectedVoice, setSelectedVoice] = useState<SpeechSynthesisVoice | null>(null);
-  const utteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
+  const [state, setState] =
+    useState<SynthesisState>('idle');
 
-  // Check support and load voices
+  const [isSupported, setIsSupported] =
+    useState(false);
+
+  const [availableVoices, setAvailableVoices] =
+    useState<SpeechSynthesisVoice[]>([]);
+
+  const [selectedVoice, setSelectedVoice] =
+    useState<SpeechSynthesisVoice | null>(
+      null
+    );
+
+  const utteranceRef =
+    useRef<SpeechSynthesisUtterance | null>(
+      null
+    );
+
+  /*
+   * Used to invalidate callbacks belonging
+   * to an old utterance.
+   */
+  const utteranceIdRef =
+    useRef(0);
+
+  /*
+   * Prevent stale callbacks after stop/cancel.
+   */
+  const stoppedRef =
+    useRef(false);
+
+  /*
+   * Keep callbacks current without
+   * rebuilding speech functions unnecessarily.
+   */
+  const onStartRef =
+    useRef(onStart);
+
+  const onEndRef =
+    useRef(onEnd);
+
+  const onErrorRef =
+    useRef(onError);
+
   useEffect(() => {
-    if (typeof window === 'undefined') return;
+    onStartRef.current =
+      onStart;
 
-    const supported = 'speechSynthesis' in window;
+    onEndRef.current =
+      onEnd;
+
+    onErrorRef.current =
+      onError;
+  }, [
+    onStart,
+    onEnd,
+    onError,
+  ]);
+
+  /*
+   * Check support and load voices.
+   */
+  useEffect(() => {
+    if (
+      typeof window === 'undefined'
+    ) {
+      return;
+    }
+
+    const supported =
+      'speechSynthesis' in window &&
+      'SpeechSynthesisUtterance' in
+        window;
+
     setIsSupported(supported);
 
-    if (!supported) return;
+    if (!supported) {
+      return;
+    }
 
     const loadVoices = () => {
-      const voices = window.speechSynthesis.getVoices();
-      setAvailableVoices(voices);
+      const voices =
+        window.speechSynthesis
+          .getVoices();
 
-      // Select preferred voice
-      if (voices.length > 0) {
-        let voice: SpeechSynthesisVoice | undefined;
+      setAvailableVoices(
+        voices
+      );
 
-        // Try languageCode first
-        if (languageCode) {
-          const langCodeBase = languageCode.split('-')[0].toLowerCase();
-          const langVoices = voices.filter(v => v.lang.toLowerCase().startsWith(langCodeBase));
-          if (langVoices.length > 0) {
-            // prefer natural
-            voice = langVoices.find(v => v.name.includes('Google') || v.name.includes('Natural') || v.name.includes('Neural')) || langVoices[0];
-          }
-        }
-
-        // Try preferred voice name if no voice found yet
-        if (!voice && preferredVoiceName) {
-          voice = voices.find(v =>
-            v.name.toLowerCase().includes(preferredVoiceName.toLowerCase())
-          );
-        }
-
-        // Fallback: prefer English, natural-sounding voices
-        if (!voice) {
-          const englishVoices = voices.filter(v => v.lang.startsWith('en'));
-
-          // Prefer Google or Microsoft voices (tend to sound more natural)
-          voice = englishVoices.find(v =>
-            v.name.includes('Google') || v.name.includes('Natural') || v.name.includes('Neural')
-          );
-
-          // Fallback to any English female voice (typically clearer for instruction)
-          if (!voice) {
-            voice = englishVoices.find(v =>
-              v.name.includes('Female') || v.name.includes('Samantha') || v.name.includes('Zira')
-            );
-          }
-
-          // Fallback to any English voice
-          if (!voice && englishVoices.length > 0) {
-            voice = englishVoices[0];
-          }
-        }
-
-        // Last resort: first available voice
-        if (!voice) voice = voices[0];
-
-        setSelectedVoice(voice);
+      if (
+        voices.length === 0
+      ) {
+        return;
       }
+
+      let voice:
+        | SpeechSynthesisVoice
+        | undefined;
+
+      /*
+       * 1. Explicit preferred voice.
+       */
+      if (
+        preferredVoiceName
+      ) {
+        voice =
+          voices.find(v =>
+            v.name
+              .toLowerCase()
+              .includes(
+                preferredVoiceName
+                  .toLowerCase()
+              )
+          );
+      }
+
+      /*
+       * 2. Requested language.
+       */
+      if (
+        !voice &&
+        languageCode
+      ) {
+        const languageBase =
+          languageCode
+            .split('-')[0]
+            .toLowerCase();
+
+        const languageVoices =
+          voices.filter(v =>
+            v.lang
+              .toLowerCase()
+              .startsWith(
+                languageBase
+              )
+          );
+
+        if (
+          languageVoices.length > 0
+        ) {
+          voice =
+            languageVoices.find(v =>
+              /natural|neural|google|microsoft/i.test(
+                v.name
+              )
+            ) ||
+            languageVoices[0];
+        }
+      }
+
+      /*
+       * 3. English natural voice.
+       */
+      if (!voice) {
+        const englishVoices =
+          voices.filter(v =>
+            v.lang
+              .toLowerCase()
+              .startsWith('en')
+          );
+
+        voice =
+          englishVoices.find(v =>
+            /natural|neural|google|microsoft/i.test(
+              v.name
+            )
+          );
+      }
+
+      /*
+       * 4. English female/clear voices.
+       */
+      if (!voice) {
+        const englishVoices =
+          voices.filter(v =>
+            v.lang
+              .toLowerCase()
+              .startsWith('en')
+          );
+
+        voice =
+          englishVoices.find(v =>
+            /female|samantha|zira|aria|jenny/i.test(
+              v.name
+            )
+          );
+      }
+
+      /*
+       * 5. Any English voice.
+       */
+      if (!voice) {
+        const englishVoices =
+          voices.filter(v =>
+            v.lang
+              .toLowerCase()
+              .startsWith('en')
+          );
+
+        if (
+          englishVoices.length > 0
+        ) {
+          voice =
+            englishVoices[0];
+        }
+      }
+
+      /*
+       * 6. Last available voice.
+       */
+      if (!voice) {
+        voice = voices[0];
+      }
+
+      /*
+       * Don't overwrite a manually
+       * selected voice.
+       */
+      setSelectedVoice(
+        previous =>
+          previous || voice || null
+      );
     };
 
     loadVoices();
-    window.speechSynthesis.onvoiceschanged = loadVoices;
+
+    window.speechSynthesis
+      .addEventListener(
+        'voiceschanged',
+        loadVoices
+      );
 
     return () => {
-      window.speechSynthesis.onvoiceschanged = null;
+      window.speechSynthesis
+        .removeEventListener(
+          'voiceschanged',
+          loadVoices
+        );
+
+      window.speechSynthesis
+        .cancel();
     };
-  }, [preferredVoiceName, languageCode]);
+  }, [
+    preferredVoiceName,
+    languageCode,
+  ]);
 
-  // Speak text
-  const speak = useCallback((text: string) => {
-    if (!isSupported || !text.trim()) return;
+  /*
+   * Speak.
+   */
+  const speak =
+    useCallback(
+      (text: string) => {
+        if (
+          !isSupported ||
+          !text.trim()
+        ) {
+          return;
+        }
 
-    // Cancel any current speech
-    window.speechSynthesis.cancel();
+        const speech =
+          window.speechSynthesis;
 
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.rate = rate;
-    utterance.pitch = pitch;
-    utterance.volume = volume;
+        /*
+         * Cancel previous speech.
+         */
+        speech.cancel();
 
-    if (selectedVoice) {
-      utterance.voice = selectedVoice;
-    }
+        const utterance =
+          new SpeechSynthesisUtterance(
+            text.trim()
+          );
 
-    utterance.onstart = () => {
-      setState('speaking');
-      onStart?.();
-    };
+        const currentId =
+          ++utteranceIdRef.current;
 
-    utterance.onend = () => {
+        stoppedRef.current =
+          false;
+
+        utterance.rate =
+          Math.min(
+            Math.max(rate, 0.1),
+            10
+          );
+
+        utterance.pitch =
+          Math.min(
+            Math.max(pitch, 0),
+            2
+          );
+
+        utterance.volume =
+          Math.min(
+            Math.max(volume, 0),
+            1
+          );
+
+        /*
+         * Set language even when no
+         * matching voice exists.
+         */
+        if (languageCode) {
+          utterance.lang =
+            languageCode;
+        }
+
+        if (selectedVoice) {
+          utterance.voice =
+            selectedVoice;
+        }
+
+        utterance.onstart =
+          () => {
+            if (
+              currentId !==
+              utteranceIdRef.current ||
+              stoppedRef.current
+            ) {
+              return;
+            }
+
+            setState('speaking');
+
+            onStartRef.current?.();
+          };
+
+        utterance.onpause =
+          () => {
+            if (
+              currentId !==
+              utteranceIdRef.current ||
+              stoppedRef.current
+            ) {
+              return;
+            }
+
+            setState('paused');
+          };
+
+        utterance.onresume =
+          () => {
+            if (
+              currentId !==
+              utteranceIdRef.current ||
+              stoppedRef.current
+            ) {
+              return;
+            }
+
+            setState('speaking');
+          };
+
+        utterance.onend =
+          () => {
+            if (
+              currentId !==
+              utteranceIdRef.current ||
+              stoppedRef.current
+            ) {
+              return;
+            }
+
+            setState('idle');
+
+            utteranceRef.current =
+              null;
+
+            onEndRef.current?.();
+          };
+
+        utterance.onerror =
+          event => {
+            if (
+              currentId !==
+              utteranceIdRef.current ||
+              stoppedRef.current
+            ) {
+              return;
+            }
+
+            /*
+             * "canceled" and "interrupted"
+             * can occur when another utterance
+             * starts. Don't treat them as a
+             * serious application error.
+             */
+            if (
+              event.error ===
+                'canceled' ||
+              event.error ===
+                'interrupted'
+            ) {
+              setState('idle');
+
+              utteranceRef.current =
+                null;
+
+              return;
+            }
+
+            setState('idle');
+
+            utteranceRef.current =
+              null;
+
+            onErrorRef.current?.(
+              event.error
+            );
+          };
+
+        utteranceRef.current =
+          utterance;
+
+        /*
+         * Some mobile browsers can retain
+         * a paused speech queue.
+         */
+        try {
+          speech.resume();
+        } catch {}
+
+        speech.speak(
+          utterance
+        );
+      },
+      [
+        isSupported,
+        rate,
+        pitch,
+        volume,
+        languageCode,
+        selectedVoice,
+      ]
+    );
+
+  /*
+   * Pause.
+   */
+  const pause =
+    useCallback(() => {
+      if (
+        !isSupported
+      ) {
+        return;
+      }
+
+      if (
+        state !== 'speaking'
+      ) {
+        return;
+      }
+
+      try {
+        window.speechSynthesis
+          .pause();
+
+        setState('paused');
+      } catch {}
+    }, [
+      isSupported,
+      state,
+    ]);
+
+  /*
+   * Resume.
+   */
+  const resume =
+    useCallback(() => {
+      if (
+        !isSupported
+      ) {
+        return;
+      }
+
+      if (
+        state !== 'paused'
+      ) {
+        return;
+      }
+
+      try {
+        window.speechSynthesis
+          .resume();
+
+        setState('speaking');
+      } catch {}
+    }, [
+      isSupported,
+      state,
+    ]);
+
+  /*
+   * Stop.
+   */
+  const stop =
+    useCallback(() => {
+      if (
+        !isSupported
+      ) {
+        return;
+      }
+
+      stoppedRef.current =
+        true;
+
+      /*
+       * Invalidate callbacks.
+       */
+      utteranceIdRef.current++;
+
+      try {
+        window.speechSynthesis
+          .cancel();
+      } catch {}
+
+      utteranceRef.current =
+        null;
+
       setState('idle');
-      onEnd?.();
-    };
+    }, [
+      isSupported,
+    ]);
 
-    utterance.onerror = (event) => {
-      setState('idle');
-      onError?.(event.error);
-    };
-
-    utterance.onpause = () => {
-      setState('paused');
-    };
-
-    utterance.onresume = () => {
-      setState('speaking');
-    };
-
-    utteranceRef.current = utterance;
-    window.speechSynthesis.speak(utterance);
-  }, [isSupported, rate, pitch, volume, selectedVoice, onStart, onEnd, onError]);
-
-  // Pause speech
-  const pause = useCallback(() => {
-    if (isSupported && state === 'speaking') {
-      window.speechSynthesis.pause();
-    }
-  }, [isSupported, state]);
-
-  // Resume speech
-  const resume = useCallback(() => {
-    if (isSupported && state === 'paused') {
-      window.speechSynthesis.resume();
-    }
-  }, [isSupported, state]);
-
-  // Stop speech
-  const stop = useCallback(() => {
-    if (isSupported) {
-      window.speechSynthesis.cancel();
-      setState('idle');
-    }
-  }, [isSupported]);
-
-  // Set voice
-  const setVoice = useCallback((voice: SpeechSynthesisVoice) => {
-    setSelectedVoice(voice);
-  }, []);
+  /*
+   * Select voice manually.
+   */
+  const setVoice =
+    useCallback(
+      (
+        voice: SpeechSynthesisVoice
+      ) => {
+        setSelectedVoice(
+          voice
+        );
+      },
+      []
+    );
 
   return {
     state,

@@ -1,6 +1,9 @@
 .header {
   position: sticky;
   top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
   z-index: var(--z-sticky);
   background: hsla(240, 20%, 6%, 0.85);
   backdrop-filter: blur(16px);
