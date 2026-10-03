@@ -81,11 +81,19 @@ export default function VoiceEngine({
       ReturnType<typeof setInterval> | null
     >(null);
 
+  const [grammaticalAccuracy, setGrammaticalAccuracy] =
+    useState<number | null>(null);
+
+  const [isAnalyzingGrammar, setIsAnalyzingGrammar] =
+    useState(false);
+
+  const lastAnalyzedTranscriptRef =
+    useRef('');
+
   const {
     state: recognitionState,
     transcript,
     interimTranscript,
-    confidence,
     error,
     isSupported,
     startListening,
@@ -295,6 +303,49 @@ export default function VoiceEngine({
   ]);
 
   /*
+   * Analyze grammatical accuracy via AI
+   * when a final transcript segment arrives.
+   */
+  useEffect(() => {
+    const trimmed = transcript.trim();
+    if (
+      !trimmed ||
+      trimmed === lastAnalyzedTranscriptRef.current ||
+      recognitionState === 'listening'
+    ) {
+      return;
+    }
+
+    // Only analyze when we have enough text
+    const wordCount = trimmed.split(/\s+/).length;
+    if (wordCount < 3) return;
+
+    lastAnalyzedTranscriptRef.current = trimmed;
+    setIsAnalyzingGrammar(true);
+
+    fetch('/api/analyze/grammar', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        transcript: trimmed,
+        language: language?.label || 'English',
+      }),
+    })
+      .then(res => res.json())
+      .then(data => {
+        if (typeof data.score === 'number') {
+          setGrammaticalAccuracy(data.score);
+        }
+      })
+      .catch(() => {
+        // Silently fail — grammar score is non-critical
+      })
+      .finally(() => {
+        setIsAnalyzingGrammar(false);
+      });
+  }, [transcript, recognitionState, language]);
+
+  /*
    * Microphone button.
    */
   const handleMicClick =
@@ -330,6 +381,8 @@ export default function VoiceEngine({
         stopListening();
       } else {
         resetTranscript();
+        setGrammaticalAccuracy(null);
+        lastAnalyzedTranscriptRef.current = '';
 
         accumulatedDurationRef.current =
           0;
@@ -684,7 +737,7 @@ export default function VoiceEngine({
                 handlePlayAIResponse
               }
               className={
-                styles.controlBtn
+                styles.playAIBtn
               }
               aria-label="Play AI response"
               id="play-ai-response-btn"
@@ -961,19 +1014,31 @@ export default function VoiceEngine({
               )}
             </p>
 
-            {confidence >
-              0 && (
+            {grammaticalAccuracy !== null && (
                 <div
                   className={
-                    styles.confidence
+                    styles.grammaticalAccuracy
                   }
                 >
-                  Confidence:{' '}
-                  {Math.round(
-                    confidence *
-                    100
-                  )}
-                  %
+                  <span className={styles.grammarLabel}>Grammar Score:</span>{' '}
+                  <span className={
+                    grammaticalAccuracy >= 85
+                      ? styles.grammarHigh
+                      : grammaticalAccuracy >= 60
+                        ? styles.grammarMedium
+                        : styles.grammarLow
+                  }>
+                    {grammaticalAccuracy}%
+                  </span>
+                </div>
+              )}
+            {isAnalyzingGrammar && (
+                <div
+                  className={
+                    styles.grammaticalAccuracy
+                  }
+                >
+                  <span className={styles.grammarLabel}>Checking grammar...</span>
                 </div>
               )}
           </div>

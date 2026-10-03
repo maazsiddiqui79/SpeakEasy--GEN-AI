@@ -1,5 +1,6 @@
 
 import Header from '@/components/layout/Header';
+import AnimatedSection from '@/components/ui/AnimatedSection';
 import styles from './page.module.css';
 import { Metadata } from 'next';
 
@@ -15,12 +16,13 @@ export default function TermsPage() {
       <Header />
 
       <main className={styles.main}>
-        <div className={styles.hero}>
+        <AnimatedSection className={styles.hero}>
           <h1 className={styles.subtitle}>Terms &amp; Conditions</h1>
           <p className={styles.subtitle}>Last Updated: October 2026</p>
-        </div>
+        </AnimatedSection>
 
-        <section className={styles.section}>
+        <AnimatedSection>
+          <section className={styles.section}>
           <h2>1. Introduction</h2>
 
           <p>
@@ -42,9 +44,11 @@ export default function TermsPage() {
             explains how information submitted during your use of SpeakEasy is
             processed and handled.
           </p>
-        </section>
+          </section>
+        </AnimatedSection>
 
-        <section className={styles.section}>
+        <AnimatedSection>
+          <section className={styles.section}>
           <h2>2. About the Service</h2>
 
           <p>
@@ -98,9 +102,11 @@ export default function TermsPage() {
             Features may change, improve, or be temporarily unavailable as the
             platform develops.
           </p>
-        </section>
+          </section>
+        </AnimatedSection>
 
-        <section className={styles.section}>
+        <AnimatedSection>
+          <section className={styles.section}>
           <h2>3. Educational and Practice Purpose</h2>
 
           <p>
@@ -123,9 +129,11 @@ export default function TermsPage() {
             guidance for practice and improvement rather than as an absolute
             evaluation.
           </p>
-        </section>
+          </section>
+        </AnimatedSection>
 
-        <section className={`${styles.section} ${styles.grokSection}`}>
+        <AnimatedSection>
+          <section className={`${styles.section} ${styles.grokSection}`}>
           <div className={styles.grokBadge}>AI SERVICE PROVIDER</div>
 
           <h2>4. Grok API and AI Processing</h2>
@@ -174,9 +182,11 @@ export default function TermsPage() {
             such information is genuinely necessary for the requested
             functionality.
           </p>
-        </section>
+          </section>
+        </AnimatedSection>
 
-        <section className={styles.section}>
+        <AnimatedSection>
+          <section className={styles.section}>
           <h2>5. User Content</h2>
 
           <p>
@@ -203,9 +213,11 @@ export default function TermsPage() {
             sensitive information belonging to another person or organization
             without appropriate authorization.
           </p>
-        </section>
+          </section>
+        </AnimatedSection>
 
-        <section className={styles.section}>
+        <AnimatedSection>
+          <section className={styles.section}>
           <h2>6. Session-Based Processing and Data Storage</h2>
 
           <p>
@@ -227,9 +239,11 @@ export default function TermsPage() {
             practices of those services. Users should review the Privacy
             Policy for additional information about how such processing works.
           </p>
-        </section>
+          </section>
+        </AnimatedSection>
 
-        <section className={styles.section}>
+        <AnimatedSection>
+          <section className={styles.section}>
           <h2>7. User Responsibilities</h2>
 
           <p>
@@ -284,9 +298,11 @@ export default function TermsPage() {
             We reserve the right to restrict access where reasonably necessary
             to protect the platform, its users, or third-party services.
           </p>
-        </section>
+          </section>
+        </AnimatedSection>
 
-        <section className={styles.section}>
+        <AnimatedSection>
+          <section className={styles.section}>
           <h2>8. AI-Generated Reports and Scores</h2>
 
           <p>
@@ -308,9 +324,11 @@ export default function TermsPage() {
             report when making important academic, employment, professional, or
             personal decisions.
           </p>
-        </section>
+          </section>
+        </AnimatedSection>
 
-        <section className={styles.section}>
+        <AnimatedSection>
+          <section className={styles.section}>
           <h2>9. Intellectual Property</h2>
 
           <p>
@@ -327,9 +345,11 @@ export default function TermsPage() {
             of such content to SpeakEasy merely because it is submitted for
             analysis.
           </p>
-        </section>
+          </section>
+        </AnimatedSection>
 
-        <section className={styles.section}>
+        <AnimatedSection>
+          <section className={styles.section}>
           <h2>10. Third-Party Services</h2>
 
           <p>
@@ -348,9 +368,11 @@ export default function TermsPage() {
             SpeakEasy does not control the independent operation of third-party
             services and cannot guarantee their uninterrupted availability.
           </p>
-        </section>
+          </section>
+        </AnimatedSection>
 
-        <section className={styles.section}>
+        <AnimatedSection>
+          <section className={styles.section}>
           <h2>11. Security</h2>
 
           <p>
@@ -367,9 +389,11 @@ export default function TermsPage() {
             they would not want transmitted to the services required to
             provide the requested functionality.
           </p>
-        </section>
+          </section>
+        </AnimatedSection>
 
-        <section className={styles.section}>
+        <AnimatedSection>
+          <section className={styles.section}>
           <h2>12. Service Availability</h2>
 
           <p>
@@ -388,9 +412,11 @@ export default function TermsPage() {
             We do not guarantee uninterrupted availability or that every
             feature will remain available indefinitely.
           </p>
-        </section>
+          </section>
+        </AnimatedSection>
 
-        <section className={styles.section}>
+        <AnimatedSection>
+          <section className={styles.section}>
           <h2>13. Disclaimer</h2>
 
           <p>
@@ -406,9 +432,11 @@ export default function TermsPage() {
             including the user&apos;s preparation, experience, practice,
             communication ability, and individual circumstances.
           </p>
-        </section>
+          </section>
+        </AnimatedSection>
 
-        <section className={styles.section}>
+        <AnimatedSection>
+          <section className={styles.section}>
           <h2>14. Limitation of Liability</h2>
 
           <p>
@@ -424,9 +452,11 @@ export default function TermsPage() {
             liability that cannot legally be excluded or limited under
             applicable law.
           </p>
-        </section>
+          </section>
+        </AnimatedSection>
 
-        <section className={styles.section}>
+        <AnimatedSection>
+          <section className={styles.section}>
           <h2>15. Changes to the Platform</h2>
 
           <p>
@@ -440,9 +470,11 @@ export default function TermsPage() {
             operation of the service. Where appropriate, related changes may
             also require updates to these Terms or our Privacy Policy.
           </p>
-        </section>
+          </section>
+        </AnimatedSection>
 
-        <section className={styles.section}>
+        <AnimatedSection>
+          <section className={styles.section}>
           <h2>16. Changes to These Terms</h2>
 
           <p>
@@ -456,9 +488,11 @@ export default function TermsPage() {
             revised &quot;Last Updated&quot; date. Users are encouraged to
             review these Terms periodically.
           </p>
-        </section>
+          </section>
+        </AnimatedSection>
 
-        <section className={styles.section}>
+        <AnimatedSection>
+          <section className={styles.section}>
           <h2>17. Privacy Policy</h2>
 
           <p>
@@ -472,9 +506,11 @@ export default function TermsPage() {
             acknowledge that you have had an opportunity to review the Privacy
             Policy.
           </p>
-        </section>
+          </section>
+        </AnimatedSection>
 
-        <section className={styles.section}>
+        <AnimatedSection>
+          <section className={styles.section}>
           <h2>18. Governing Law</h2>
 
           <p>
@@ -488,9 +524,11 @@ export default function TermsPage() {
             accordance with applicable law and the appropriate legal
             jurisdiction.
           </p>
-        </section>
+          </section>
+        </AnimatedSection>
 
-        <section className={styles.section}>
+        <AnimatedSection>
+          <section className={styles.section}>
           <h2>19. Contact</h2>
 
           <p>
@@ -499,9 +537,11 @@ export default function TermsPage() {
             SpeakEasy, you may contact the project team through the contact
             information provided on the website.
           </p>
-        </section>
+          </section>
+        </AnimatedSection>
 
-        <section className={styles.section}>
+        <AnimatedSection>
+          <section className={styles.section}>
           <h2>20. Acceptance of Terms</h2>
 
           <p>
@@ -515,7 +555,8 @@ export default function TermsPage() {
             If you do not agree with these Terms, you should discontinue use of
             the platform.
           </p>
-        </section>
+          </section>
+        </AnimatedSection>
       </main>
     </>
   );

@@ -143,10 +143,21 @@
   border-radius: 50%;
 }
 
-.voiceStateDot[data-state="ready"] { background: var(--color-success); }
-.voiceStateDot[data-state="listening"] { background: var(--color-error); }
-.voiceStateDot[data-state="analyzing"] { background: var(--color-warning); }
-.voiceStateDot[data-state="speaking"] { background: var(--color-primary-light); }
+.voiceStateDot[data-state="ready"] {
+  background: var(--color-success);
+}
+
+.voiceStateDot[data-state="listening"] {
+  background: var(--color-error);
+}
+
+.voiceStateDot[data-state="analyzing"] {
+  background: var(--color-warning);
+}
+
+.voiceStateDot[data-state="speaking"] {
+  background: var(--color-primary-light);
+}
 
 .voiceArrow {
   color: var(--text-muted);

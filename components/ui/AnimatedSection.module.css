@@ -1,0 +1,17 @@
+.hidden {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+  will-change: opacity, transform;
+}
+
+.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.delay100 { transition-delay: 100ms; }
+.delay200 { transition-delay: 200ms; }
+.delay300 { transition-delay: 300ms; }
+.delay400 { transition-delay: 400ms; }
+.delay500 { transition-delay: 500ms; }

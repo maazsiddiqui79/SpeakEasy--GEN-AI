@@ -292,28 +292,7 @@ export default function OppositePage() {
               </div>
               {phase === 'active' && (
                 <div style={{ display: 'flex', gap: '8px' }}>
-                  <button
-                    className="btn btn-secondary"
-                    onClick={async () => {
-                      setIsGeneratingPDF(true);
-                      await new Promise(resolve => setTimeout(resolve, 50));
-                      try {
-                        await generatePDFReport({
-                          mode: 'Opposite Mode',
-                          topic: topicData?.topic || 'Assigned Topic',
-                          exchanges: exchanges,
-                          speechAnalysis: lastAnalysis || undefined,
-                          suggestions: lastSuggestions
-                        });
-                      } finally {
-                        setIsGeneratingPDF(false);
-                      }
-                    }}
-                    title="Download current report"
-                    disabled={isGeneratingPDF}
-                  >
-                    {isGeneratingPDF ? 'Generating...' : 'Download Report'}
-                  </button>
+                  
                   <button
                     className="btn btn-secondary"
                     onClick={handleEndSession}

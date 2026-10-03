@@ -1,0 +1,6 @@
+<svg width="800" height="600" viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+  <rect width="800" height="600" fill="#1e1e2e"/>
+  <rect x="50" y="50" width="700" height="500" rx="20" fill="#2a2a3e" stroke="#3b82f6" stroke-width="2" stroke-dasharray="10, 10"/>
+  <text x="400" y="300" fill="#e2e8f0" font-family="sans-serif" font-size="32" font-weight="bold" text-anchor="middle">Dummy Screenshot Image</text>
+  <text x="400" y="340" fill="#9ca3af" font-family="sans-serif" font-size="16" text-anchor="middle">Replace this with your actual image file</text>
+</svg>
