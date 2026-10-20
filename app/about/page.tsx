@@ -115,7 +115,7 @@ export default function AboutPage() {
               </div>
 
               <Link
-                href="https://maaz-social-card.vercel.app/"
+                href="https://the-maaz-portfolio.vercel.app/"
                 className={styles.connectBtn}
               >
                 Connect ↗
